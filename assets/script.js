@@ -11,45 +11,48 @@ var cardContainerEl = document.querySelector("#card-container");
             // GETTING DATA FROM LOCAL STORAGE
 
 function getStoredCities(){
+  //var weather_city = localStorage.getItem("weather_city");
     for (var j = 0; j < localStorage.length; j++) {
       var key = localStorage.key(j);
-      console.log(key);
-      var storedCity = JSON.parse(window.localStorage.getItem(key));
-      console.log(storedCity);
+      //console.log(key);
+      if (key.startsWith("weather_city_")){
+        var storedCity = JSON.parse(window.localStorage.getItem(key));
+        console.log(storedCity);
 
-      var cityList = document.querySelector("#result-log");
-      var storedBtn = document.createElement("button");
+        var cityList = document.querySelector("#result-log");
+        var storedBtn = document.createElement("button");
       
-      storedBtn.classList.add("btn", "city-buttons", "btn-lg", "btn-block");
-      storedBtn.textContent = storedCity.name + " - " + storedCity.state;
-      cityList.appendChild(storedBtn);
+        storedBtn.classList.add("btn", "city-buttons", "btn-lg", "btn-block");
+        storedBtn.textContent = storedCity.name + " - " + storedCity.state;
+        cityList.appendChild(storedBtn);
 
-      storedBtn.setAttribute("type", "button");
-      storedBtn.setAttribute("lat", storedCity.lat);
-      storedBtn.setAttribute("lon", storedCity.lon);
-      
-      // RESETTING THE LOCAL STORAGE
-      var resetBtn = document.querySelector("#reset");
-      resetBtn.classList.add("visible");
-      resetBtn.addEventListener("click", function(event){
-      event.preventDefault();  
-      window.localStorage.clear();
-      document.location.reload();
-      })
+        storedBtn.setAttribute("type", "button");
+        storedBtn.setAttribute("lat", storedCity.lat);
+        storedBtn.setAttribute("lon", storedCity.lon);
+        
+        // RESETTING THE LOCAL STORAGE
+        var resetBtn = document.querySelector("#reset");
+        resetBtn.classList.add("visible");
+        resetBtn.addEventListener("click", function(event){
+        event.preventDefault();  
+        window.localStorage.clear();
+        document.location.reload();
+        })
 
-      storedBtn.addEventListener("click", function(event){
+        storedBtn.addEventListener("click", function(event){
 
-        cardContainerEl.innerHTML = "";
-        activeCityNameEl.textContent = "";
-        activeCityIconEl.textContent = "";
-        activeCityNameEl.textContent = this.textContent;
+          cardContainerEl.innerHTML = "";
+          activeCityNameEl.textContent = "";
+          activeCityIconEl.textContent = "";
+          activeCityNameEl.textContent = this.textContent;
 
-        var lat = event.target.getAttribute("lat");
-        var lon = event.target.getAttribute("lon");
+          var lat = event.target.getAttribute("lat");
+          var lon = event.target.getAttribute("lon");
 
-        searchOneCall(lat, lon);
-      });
-    }
+          searchOneCall(lat, lon);
+        });
+      }// end of if 
+    }//end of for 
 }
 getStoredCities();
 
@@ -71,7 +74,7 @@ function formSubmitHandler(event) {
     }
 };
 
-searchFormEl.addEventListener('click', formSubmitHandler);
+searchFormEl.addEventListener('submit', formSubmitHandler);
 
             // SEARCHING GEOCODE API 
 
@@ -138,7 +141,7 @@ function printCityNameResults(resultObj) {
     var lat = event.target.getAttribute("lat");
     var lon = event.target.getAttribute("lon");
     searchOneCall(lat, lon);
-    window.localStorage.setItem(resultObj.name, JSON.stringify({
+    window.localStorage.setItem("weather_city_"+resultObj.name, JSON.stringify({
     name: resultObj.name,
     state: resultObj.state,
     lat: resultObj.lat,
