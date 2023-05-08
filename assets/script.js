@@ -141,7 +141,7 @@ function printCityNameResults(resultObj) {
     var lat = event.target.getAttribute("lat");
     var lon = event.target.getAttribute("lon");
     searchOneCall(lat, lon);
-    window.localStorage.setItem("weather_city_"+resultObj.name, JSON.stringify({
+    window.localStorage.setItem("weather_city_"+resultObj.lat+"_"+resultObj.lon, JSON.stringify({
     name: resultObj.name,
     state: resultObj.state,
     lat: resultObj.lat,
